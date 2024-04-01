@@ -14,7 +14,7 @@ def browser_settings(request):
     browser.config.window_height = window_height
 
 
-@pytest.mark.parametrize('browser_settings',[(1920, 1080), (1366, 768), (1536, 864)],
+@pytest.mark.parametrize('browser_settings', [(1920, 1080), (1366, 768), (1536, 864)],
                          ids=['large', 'medium', 'small'],
                          indirect=True)
 def test_github_desktop(browser_settings):

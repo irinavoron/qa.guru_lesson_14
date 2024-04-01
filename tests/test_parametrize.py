@@ -13,6 +13,10 @@ def browser_settings(request):
     browser.config.window_width = window_width
     browser.config.window_height = window_height
 
+    yield
+
+    browser.quit()
+
 
 desktop_only = pytest.mark.parametrize('browser_settings', [(1920, 1080), (1366, 768), (1536, 864)],
                                        ids=['large', 'medium', 'small'],

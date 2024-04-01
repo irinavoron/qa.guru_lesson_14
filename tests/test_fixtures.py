@@ -13,6 +13,10 @@ def desktop(request):
     browser.config.window_width = window_width
     browser.config.window_height = window_height
 
+    yield
+
+    browser.quit()
+
 
 @pytest.fixture(params=[(360, 780), (390, 844), (414, 896)],
                 ids=['iPhone 12 mini', 'iPhone 12 Pro', 'iPhone XR'])
@@ -21,6 +25,10 @@ def mobile(request):
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
+
+    yield
+
+    browser.quit()
 
 
 def test_github_desktop(desktop):

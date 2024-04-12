@@ -22,7 +22,7 @@ mobile_only = pytest.mark.parametrize(
 @desktop_only
 def test_github_desktop(browser_settings):
     browser.open('/')
-    browser.element('.HeaderMenu-link--sign-in').click()
+    browser.element('.HeaderMenu-link--sign-in5').click()
 
 
 @mobile_only

@@ -1,13 +1,14 @@
 import os
+
 import pytest
 from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 
+import config
+from config import config
 from utils import attach
-
-base_url = 'https://github.com/'
 
 
 @pytest.fixture(autouse=True)
@@ -28,12 +29,12 @@ def selenoid_browser_settings():
 
     options.capabilities.update(selenoid_capabilities)
 
-    url = os.getenv('SELENOID_URL')
-    login = os.getenv('SELENOID_LOGIN')
-    password = os.getenv('SELENOID_PASSWORD')
+    selenoid_url = os.getenv('SELENOID_URL')
+    selenoid_login = os.getenv('SELENOID_LOGIN')
+    selenoid_password = os.getenv('SELENOID_PASSWORD')
 
     driver = webdriver.Remote(
-        command_executor=f'https://{login}:{password}@{url}/wd/hub',
+        command_executor=f'https://{selenoid_login}:{selenoid_password}@{selenoid_url}/wd/hub',
         options=options)
 
     browser.config.driver = driver
@@ -53,10 +54,12 @@ def selenoid_browser_settings():
     ids=['large', 'medium', 'small']
 )
 def desktop_browser_settings(request):
-    browser.config.base_url = base_url
+    browser.config.base_url = config.BASE_URL
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
+
+    yield
 
 
 @pytest.fixture(
@@ -64,10 +67,12 @@ def desktop_browser_settings(request):
     ids=['iPhone 12 mini', 'iPhone 12 Pro', 'iPhone XR']
 )
 def mobile_browser_settings(request):
-    browser.config.base_url = base_url
+    browser.config.base_url = config.BASE_URL
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
+
+    yield
 
 
 @pytest.fixture(
@@ -75,7 +80,8 @@ def mobile_browser_settings(request):
     ids=['large', 'medium', 'small', 'iPhone 12 mini', 'iPhone 12 Pro', 'iPhone XR']
 )
 def browser_settings(request):
-    browser.config.base_url = base_url
+    browser.config.base_url = config.BASE_URL
+    browser.config.timeout = config.TIMEOUT
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
@@ -84,4 +90,3 @@ def browser_settings(request):
         yield 'mobile'
     else:
         yield 'desktop'
-

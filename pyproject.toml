@@ -11,6 +11,7 @@ packages = [{include = "qa"}]
 python = "^3.12"
 selene = "2.0.0rc9"
 python-dotenv = "^1.0.1"
+pydantic-settings = "^2.2.1"
 
 
 [tool.poetry.group.dev.dependencies]

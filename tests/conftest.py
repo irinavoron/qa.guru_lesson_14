@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 
+from utils import attach
+
 base_url = 'https://github.com/'
 
 
@@ -36,6 +38,15 @@ def selenoid_browser_settings():
 
     browser.config.driver = driver
 
+    yield
+
+    attach.add_screenshot(browser)
+    attach.add_html(browser)
+    attach.add_logs(browser)
+    attach.add_video(browser)
+
+    browser.quit()
+
 
 @pytest.fixture(
     params=[(1920, 1080), (1366, 768), (1536, 864)],
@@ -47,10 +58,6 @@ def desktop_browser_settings(request):
     browser.config.window_width = window_width
     browser.config.window_height = window_height
 
-    yield
-
-    browser.quit()
-
 
 @pytest.fixture(
     params=[(360, 780), (390, 844), (414, 896)],
@@ -61,10 +68,6 @@ def mobile_browser_settings(request):
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
-
-    yield
-
-    browser.quit()
 
 
 @pytest.fixture(
@@ -82,4 +85,3 @@ def browser_settings(request):
     else:
         yield 'desktop'
 
-    browser.quit()

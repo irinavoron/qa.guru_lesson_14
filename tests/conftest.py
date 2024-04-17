@@ -38,6 +38,9 @@ def browser_settings(request):
     browser.config.window_width = window_width
     browser.config.window_height = window_height
 
-    yield
+    if window_width < 800:
+        yield 'mobile'
+    else:
+        yield 'desktop'
 
 

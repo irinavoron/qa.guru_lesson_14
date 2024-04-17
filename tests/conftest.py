@@ -1,5 +1,41 @@
+import os
+
 import pytest
 from selene import browser
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from dotenv import load_dotenv
+
+
+@pytest.fixture(autouse=True)
+def selenoid_settings():
+    options = Options()
+
+    selenoid_capabilities = {
+        "browserName": "chrome",
+        "browserVersion": "122.0",
+        "selenoid:options": {
+            "enableVideo": True,
+            "enableVNC": True
+        }
+    }
+
+    options.capabilities.update(selenoid_capabilities)
+
+    load_dotenv()
+    selenoid_url = os.getenv('SELENOID_URL')
+    selenoid_login = os.getenv('SELENOID_LOGIN')
+    selenoid_password = os.getenv('SELENOID_PASSWORD')
+
+    driver = webdriver.Remote(
+        command_executor=f'https://{selenoid_login}:{selenoid_password}@{selenoid_url}/wd/hub',
+        options=options)
+
+    browser.config.driver = driver
+
+    yield
+
+    browser.quit()
 
 
 @pytest.fixture(

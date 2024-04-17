@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 
 from config import config
+from utils import attach
 
 
 @pytest.fixture(autouse=True)
@@ -35,6 +36,10 @@ def selenoid_settings():
     browser.config.driver = driver
 
     yield
+
+    attach.add_screenshot(browser)
+    attach.add_html(browser)
+    attach.add_html(browser)
 
     browser.quit()
 
@@ -79,5 +84,3 @@ def browser_settings(request):
         yield 'mobile'
     else:
         yield 'desktop'
-
-

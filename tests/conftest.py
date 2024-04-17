@@ -1,10 +1,11 @@
 import os
-
 import pytest
 from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
+
+from config import config
 
 
 @pytest.fixture(autouse=True)
@@ -43,7 +44,7 @@ def selenoid_settings():
     ids=['large', 'medium', 'small']
 )
 def desktop_browser_settings(request):
-    browser.config.base_url = 'https://github.com/'
+    browser.config.base_url = config.BASE_URL
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
@@ -56,7 +57,7 @@ def desktop_browser_settings(request):
     ids=['iPhone 12 mini', 'iPhone 12 Pro', 'iPhone XR']
 )
 def mobile_browser_settings(request):
-    browser.config.base_url = 'https://github.com/'
+    browser.config.base_url = config.BASE_URL
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
@@ -69,7 +70,7 @@ def mobile_browser_settings(request):
     ids=['large', 'medium', 'small', 'iPhone 12 mini', 'iPhone 12 Pro', 'iPhone XR']
 )
 def browser_settings(request):
-    browser.config.base_url = 'https://github.com/'
+    browser.config.base_url = config.BASE_URL
     window_width, window_height = request.param
     browser.config.window_width = window_width
     browser.config.window_height = window_height
